@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Profile</title>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>Your emergency contacts: {{ emergency_contacts | join(', ') }}</p>
+        <div id="timer">03:00:00</div> <!-- Timer display -->
+        <div id="currentTime"></div> <!-- Current time display -->
+        <button id="checkin">I'm Safe</button>
+        <button id="panic">Panic</button>
+        <button id="shareLocation" onclick="shareLocation()">Share Location</button>
+        <button id="callPolice" onclick="window.location.href='tel:911'">Call Police</button>
+        <button id="whatsapp" onclick="sendWhatsAppMessage()">Send Alert via WhatsApp</button>
+    </div>
+
+    <!-- Popup for alerting the user -->
+    <div id="popup">
+        <p>15 seconds left! Please press "I'm Safe" or "SOS".</p>
+        <button id="safeButton">I'm Safe</button>
+        <button id="sosButton">SOS</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        let countdown; // Declare countdown variable
+        let timeLeft = 10800; // 3 hours in seconds
+        const timerDisplay = document.getElementById('timer');
+        const currentTimeDisplay = document.getElementById('currentTime');
+        const popup = document.getElementById('popup');
+        const safeButton = document.getElementById('safeButton');
+        const sosButton = document.getElementById('sosButton');
+
+        // Function to start the countdown
+        function startCountdown() {
+            countdown = setInterval(() => {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+
+                // Format time as HH:MM:SS
+                timerDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                // Check if time is up
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    alarm(); // Trigger alarm
+                } else if (timeLeft === 15) {
+                    showPopup(); // Show popup when 15 seconds left
+                }
+
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Function to update the current time
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            currentTimeDisplay.textContent = `Current Time: ${hours}:${minutes}:${seconds}`;
+        }
+
+        // Call updateCurrentTime every second
+        setInterval(updateCurrentTime, 1000);
+
+        function showPopup() {
+            popup.style.display = 'block'; // Show the popup
+            playSound(); // Play sound
+        }
+
+        function playSound() {
+            const audio = new Audio('path_to_alarm_sound.mp3'); // Replace with your sound file path
+            audio.play();
+        }
+
+        // Function to share location
+        function shareLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    // Send location to the server
+                    fetch('/share_location', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ latitude, longitude })
+                    });
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        // Function to send WhatsApp message
+        function sendWhatsAppMessage() {
+            const message = "I need help! My location is: [insert location link here]";
+            const phoneNumber = "1234567890"; // Replace with the emergency contact number
+            const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Handle the "I'm Safe" button click
+        document.getElementById('checkin').addEventListener('click', function() {
+            clearInterval(countdown); // Stop any existing countdown
+            timeLeft = 10800; // Reset time to 3 hours
+            startCountdown(); // Start the countdown
+            // Optionally, send a check-in request to the server
+            fetch('/checkin', { method: 'POST' });
+        });
+
+        // Start the countdown when the page loads
+        window.onload = function() {
+            startCountdown();
+            updateCurrentTime(); // Initialize current time display
+        };
+    </script>
+</body>
+</html>

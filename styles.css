@@ -1,0 +1,133 @@
+/* styles.css */
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8; /* Light gray background */
+    color: #343a40; /* Dark gray text */
+    line-height: 1.6;
+}
+
+/* Container Styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #007bff; /* Bootstrap primary color */
+    font-size: 2.5em;
+}
+
+/* Profile Container */
+.profile-container {
+    background: #ffffff; /* White background */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+/* Timer and Current Time */
+#timer, #currentTime {
+    font-size: 1.5em;
+    color: #dc3545; /* Red color for alarm */
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* Button Styles */
+button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button#checkin {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+
+button#checkin:hover {
+    background-color: #218838; /* Darker green */
+}
+
+button#panic {
+    background-color: #dc3545; /* Red */
+    color: white;
+}
+
+button#panic:hover {
+    background-color: #c82333; /* Darker red */
+}
+
+button#shareLocation {
+    background-color: #007bff; /* Blue */
+    color: white;
+}
+
+button#shareLocation:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+button#callPolice {
+    background-color: #ffc107; /* Yellow */
+    color: black;
+}
+
+button#callPolice:hover {
+    background-color: #e0a800; /* Darker yellow */
+}
+
+button#whatsapp {
+    background-color: #25D366; /* WhatsApp green */
+    color: white;
+}
+
+button#whatsapp:hover {
+    background-color: #1DAF1A; /* Darker WhatsApp green */
+}
+
+/* Popup styles */
+#popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+#popup button {
+    margin: 5px;
+    width: auto; /* Allow buttons to size based on content */
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #6c757d; /* Gray text */
+}

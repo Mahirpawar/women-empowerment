@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Women Empowerment - Home</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Women Empowerment Safety App</h1>
+        <div class="profile-container">
+            <h2>Register</h2>
+            <form action="/register" method="POST">
+                <input type="text" name="username" placeholder="Enter your name" required>
+                <input type="text" name="emergency_contacts" placeholder="Enter emergency contacts (comma-separated)" required>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Women Empowerment. All rights reserved.</p>
+    </footer>
+</body>
+</html>
